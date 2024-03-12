@@ -34,9 +34,9 @@ tab2 = [
      sg.Button('Apply G0 Command', key='g0', size=20)],
 
     [sg.Text('G1', size=(20, 1)),
-     sg.Input(size=(10, 1), key='xpos', default_text="X ##", ),
-     sg.Input(size=(10, 1), key='ypos', default_text="Y ##"),
-     sg.Input(size=(10, 1), key='vel', default_text="V ##", ),
+     sg.Input(size=(10, 1), key='xpos1', default_text="X ##", ),
+     sg.Input(size=(10, 1), key='ypos1', default_text="Y ##"),
+     sg.Input(size=(10, 1), key='vel', default_text="F ##", ),
      sg.Button('Apply G1 Command', key='g1', size=20)],
 
     [sg.Text('G20', size=(20, 1)), sg.Button('Apply G20 Command', key='g20', size=20)],
@@ -63,7 +63,7 @@ window = sg.Window('Robot Arm Interface', layout, location=(200, 0), return_keyb
                    use_default_focus=False)
 
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=0)
     if event == sg.WIN_CLOSED or event == 'exit':  # if user closes window or clicks cancel
         break
     if event == 'free_mode':
@@ -75,7 +75,7 @@ while True:
         USBSerial.write(q.encode(errors='ignore'))
 
         while event != 'exit_mode':
-            event, values = window.read()
+            event, values = window.read(timeout=0)
             window.refresh()
             if len(event) == 1:
                 print(event)
@@ -105,7 +105,7 @@ while True:
 
     elif event == 'g1':
 
-        serial_data = "G01" + values['xpos'] + values['ypos'] + values['vel'] + "\n"
+        serial_data = "G01" + values['xpos1'] + values['ypos1'] + values['vel'] + "\n"
         # print(serial_data)
         print("Executing G1 Command")
         USBSerial.write(serial_data.encode(errors='ignore'))
